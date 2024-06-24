@@ -1,9 +1,9 @@
 {
-  "name": "cordova-plugin-logiclinkplugin",
+  "name": "mi-logiclinkplugin",
   "version": "0.0.1",
-  "description": "",
+  "description": "Un plugin de Cordova",
   "cordova": {
-    "id": "cordova-plugin-logiclinkplugin",
+    "id": "org.example.logiclinkplugin",
     "platforms": [
       "android"
     ]
@@ -13,10 +13,10 @@
     "url": "git+https://github.com/JOSEOSTI/LogicLinkPlugin.git"
   },
   "keywords": [
-    "ecosystem:cordova",
-    "cordova-android"
+    "cordova",
+    "plugin"
   ],
-  "author": "jose ostaiza",
+  "author": "jose ostazai",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/JOSEOSTI/LogicLinkPlugin/issues"
