@@ -1,0 +1,17 @@
+{
+  "name": "cordova-plugin-logiclinkplugin",
+  "version": "0.0.1",
+  "description": "cordova-plugin-logiclinkplugin",
+  "cordova": {
+    "id": "cordova-plugin-logiclinkplugin",
+    "platforms": [
+      "android"
+    ]
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-android"
+  ],
+  "author": "jose ostaiza",
+  "license": "MIT"
+}
