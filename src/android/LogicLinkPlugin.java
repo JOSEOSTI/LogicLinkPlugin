@@ -1,4 +1,4 @@
-package cordova-plugin-logiclinkplugin;
+package org.example.logiclinkplugin;
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
@@ -25,6 +25,14 @@ public class LogicLinkPlugin extends CordovaPlugin {
     private void coolMethod(String message, CallbackContext callbackContext) {
         if (message != null && message.length() > 0) {
             callbackContext.success(message);
+        } else {
+            callbackContext.error("Expected one non-empty string argument.");
+        }
+    }
+    
+    private void saludar(String message, CallbackContext callbackContext) {
+        if (message != null && message.length() > 0) {
+            callbackContext.success("hola " + message);
         } else {
             callbackContext.error("Expected one non-empty string argument.");
         }
