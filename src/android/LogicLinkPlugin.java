@@ -18,6 +18,10 @@ public class LogicLinkPlugin extends CordovaPlugin {
             String message = args.getString(0);
             this.coolMethod(message, callbackContext);
             return true;
+        }else if(action.equals("saludarMethod")){
+            String message = args.getString(0);
+            this.saludarMethod(message, callbackContext);
+            return true;
         }
         return false;
     }
@@ -30,9 +34,9 @@ public class LogicLinkPlugin extends CordovaPlugin {
         }
     }
     
-    private void saludar(String message, CallbackContext callbackContext) {
+    private void saludarMethod(String message, CallbackContext callbackContext) {
         if (message != null && message.length() > 0) {
-            callbackContext.success("hola " + message);
+            callbackContext.success("hola " +message );
         } else {
             callbackContext.error("Expected one non-empty string argument.");
         }
