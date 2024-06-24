@@ -10,11 +10,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/JOSEOSTI/LogicLinkPlugin.git"
+    "url": "https://github.com/JOSEOSTI/LogicLinkPlugin.git"
   },
   "keywords": [
-    "cordova",
-    "plugin"
+    "ecosystem:cordova",
+    "cordova-android"
   ],
   "author": "jose ostazai",
   "license": "ISC",
