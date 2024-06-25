@@ -1,5 +1,5 @@
 var exec = require('cordova/exec');
-
+argscheck = require('cordova/argscheck');
 exports.coolMethod = function (arg0, success, error) {
     exec(success, error, 'LogicLinkPlugin', 'coolMethod', [arg0]);
 };

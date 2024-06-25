@@ -41,4 +41,7 @@ public class LogicLinkPlugin extends CordovaPlugin {
             callbackContext.error("Expected one non-empty string argument.");
         }
     }
+
+
+    
 }
