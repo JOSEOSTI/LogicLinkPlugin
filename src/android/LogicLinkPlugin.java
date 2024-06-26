@@ -65,7 +65,7 @@ public class LogicLinkPlugin extends CordovaPlugin {
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     // Utilizar FileProvider para generar la URI del archivo
-                    uri = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", file);
+                    uri = FileProvider.getUriForFile(context, context.getPackageName() + ".provider", file);
                 } else {
                     // Si es una versión anterior a Android Nougat, utilizar Uri.fromFile()
                     uri = Uri.fromFile(file);
