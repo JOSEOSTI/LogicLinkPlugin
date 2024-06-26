@@ -6,7 +6,6 @@
     <repo>https://github.com/JOSEOSTI/LogicLinkPlugin</repo>
     <js-module name="LogicLinkPlugin" src="www/LogicLinkPlugin.js">
         <clobbers target="cordova.plugins.LogicLinkPlugin" />
-        <merges target="cordova.plugins.LogicLinkPlugin"/>
     </js-module>
     <platform name="android">
         <config-file parent="/*" target="res/xml/config.xml">
