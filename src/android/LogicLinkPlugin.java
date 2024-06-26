@@ -2,23 +2,21 @@ package org.example.logiclinkplugin;
 
 import org.apache.cordova.CordovaPlugin;
 
-import java.io.File;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.apache.cordova.CallbackContext;
-
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import androidx.core.content.FileProvider;
+import android.webkit.MimeTypeMap;
 
 import java.io.File;
-/**
- * This class echoes a string called from JavaScript.
- */
+import java.io.IOException;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.apache.cordova.CallbackContext;
+
 public class LogicLinkPlugin extends CordovaPlugin {
 
     @Override
@@ -27,11 +25,11 @@ public class LogicLinkPlugin extends CordovaPlugin {
             String message = args.getString(0);
             this.coolMethod(message, callbackContext);
             return true;
-        }else if(action.equals("saludarMethod")){
+        } else if (action.equals("saludarMethod")) {
             String message = args.getString(0);
             this.saludarMethod(message, callbackContext);
             return true;
-        }else  if (action.equals("openFile")) {
+        } else if (action.equals("openFile")) {
             String filePath = args.getString(0);
             openFile(filePath, callbackContext);
             return true;
@@ -49,7 +47,7 @@ public class LogicLinkPlugin extends CordovaPlugin {
     
     private void saludarMethod(String message, CallbackContext callbackContext) {
         if (message != null && message.length() > 0) {
-            callbackContext.success("hola " +message );
+            callbackContext.success("Hola " + message);
         } else {
             callbackContext.error("Expected one non-empty string argument.");
         }
@@ -92,14 +90,12 @@ public class LogicLinkPlugin extends CordovaPlugin {
 
     private String getMimeType(String url) {
         String mimeType;
-        if (url.lastIndexOf(".") != -1) {
-            String extension = url.substring(url.lastIndexOf(".") + 1);
+        String extension = MimeTypeMap.getFileExtensionFromUrl(url);
+        if (extension != null) {
             mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension.toLowerCase());
         } else {
             mimeType = "application/octet-stream";
         }
         return mimeType;
     }
-
-    
 }
