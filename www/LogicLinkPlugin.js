@@ -8,7 +8,7 @@ exports.saludarMethod = function (arg0, success, error) {
     exec(success, error, 'LogicLinkPlugin', 'saludarMethod', [arg0]);
 };
 
-exports.open = function (uri, success, error, progress, trustAllCertificates) {
+exports.openFile = function (uri, success, error, progress, trustAllCertificates) {
     if (!uri || arguments.length === 0) { return false; }
 
     if (uri.match('http')) {
@@ -16,7 +16,7 @@ exports.open = function (uri, success, error, progress, trustAllCertificates) {
     } else {
         uri = encodeURI(uri);
         exec(onSuccess.bind(this, uri, success),
-            onError.bind(this, error), 'LogicLinkPlugin', 'open', [uri]);
+            onError.bind(this, error), 'LogicLinkPlugin', 'openFile', [uri]);
     }
 };
 
@@ -52,7 +52,7 @@ function downloadAndOpen(url, success, error, progress, trustAllCertificates) {
         function done(entry) {
             var file = entry.toURL();
             exec(onSuccess.bind(this, file, success),
-                onError.bind(this, error), 'LogicLinkPlugin', 'open', [file]);
+                onError.bind(this, error), 'LogicLinkPlugin', 'openFile', [file]);
         },
         onError.bind(this, error),
         trustAllCertificates
