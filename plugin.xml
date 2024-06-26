@@ -11,7 +11,6 @@
 		<merges target="cordova.plugins.LogicLinkPlugin"/>
 	</js-module>
 	<platform name="android">
-		<preference name="AndroidPersistentFileLocation" value="Compatibility" />
 		<config-file parent="/*" target="res/xml/config.xml">
 			<feature name="LogicLinkPlugin">
 				<param name="android-package" value="org.example.logiclinkplugin.LogicLinkPlugin" />
