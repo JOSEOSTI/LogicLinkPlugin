@@ -17,8 +17,18 @@
     "watch": "gulp watch"
   },
   "keywords": [
+    "cordova",
+    "file",
+    "open",
+    "intent",
+    "video",
+    "audio",
+    "image",
+    "photo",
+    "pdf",
     "ecosystem:cordova",
-    "cordova-android"
+    "cordova-android",
+    "cordova-ios"
   ],
   "author": "jose ostazai",
   "license": "ISC",
