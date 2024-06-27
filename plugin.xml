@@ -7,7 +7,7 @@
 	<platform name="android">
 		<config-file parent="/*" target="res/xml/config.xml">
 			<feature name="logicLinkPlugin">
-				<param name="android-package" value="com.mba3.cordofileopen.LogicLinkPlugin" />
+				<param name="android-package" value="com.mba3.cordofileopen" />
 			</feature>
 		</config-file>
 		<config-file parent="/*" target="AndroidManifest.xml">
@@ -16,7 +16,7 @@
 			</provider>
 		</config-file>
 		<source-file src="src/android/LogicLinkPlugin.java" target-dir="src/com/mba3/cordofileopen"/>
-		<source-file src="src/android/res/xml/provider_paths.xml" target="res/xml/provider_paths.xml"/>
+		<source-file src="src/android/provider_paths.xml" target-dir="res/xml/provider_paths.xml"/>
 	</platform>
 	<dependency id="cordova-plugin-file"/>
 	<dependency id="cordova-plugin-file-transfer"/>
