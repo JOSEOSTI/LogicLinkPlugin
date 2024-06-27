@@ -26,11 +26,6 @@
 		</config-file>
 		<source-file src="src/android/LogicLinkPlugin.java" target-dir="src/org/example/logiclinkplugin"/>
 		<source-file src="src/android/res/xml/provider_paths.xml" target="res/xml/provider_paths.xml"/>
-		        <!-- Permissions -->
-        <!-- <config-file parent="/manifest" target="AndroidManifest.xml">
-            <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-        </config-file> -->
 	</platform>
 	<dependency id="cordova-plugin-file"/>
 	<dependency id="cordova-plugin-file-transfer"/>
