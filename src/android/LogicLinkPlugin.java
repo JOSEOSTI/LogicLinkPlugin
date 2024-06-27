@@ -16,7 +16,7 @@ import java.io.File;
 /**
  * This class starts an activity for an intent to view files
  */
-public class Open extends CordovaPlugin {
+public class LogicLinkPlugin extends CordovaPlugin {
 
     public static final String OPEN_ACTION = "open";
 
