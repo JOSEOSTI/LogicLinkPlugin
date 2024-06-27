@@ -1,30 +1,21 @@
-<?xml version="1.0" encoding="utf-8"?>
-<plugin id="org.example.logiclinkplugin" version="0.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
-	<name>
-		LogicLinkPlugin
-	</name>
-	<js-module name="LogicLinkPlugin" src="www/LogicLinkPlugin.js">
-		<clobbers target="org.example.logiclinkplugin" />
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="com.mba3.cordofileopen" version="0.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+	<name>Myplugin</name>
+	<js-module name="logicLinkPlugin" src="www/LogicLinkPlugin.js">
+		<clobbers target="cordova.plugins.cordoFileOpen" />
 	</js-module>
 	<platform name="android">
 		<config-file parent="/*" target="res/xml/config.xml">
-			<feature name="LogicLinkPlugin">
-				<param name="android-package" value="org.example.logiclinkplugin" />
+			<feature name="logicLinkPlugin">
+				<param name="android-package" value="com.mba3.cordofileopen.LogicLinkPlugin" />
 			</feature>
 		</config-file>
-
 		<config-file parent="/manifest/application" target="AndroidManifest.xml">
-		<provider
-                android:name="androidx.core.content.FileProvider"
-                android:authorities="${applicationId}.fileprovider"
-                android:exported="false"
-                android:grantUriPermissions="true">
-				<meta-data
-                    android:name="android.support.FILE_PROVIDER_PATHS"
-                    android:resource="@xml/provider_paths" />
+			<provider  android:name="androidx.core.content.FileProvider" android:authorities="${applicationId}.fileprovider" android:exported="false" android:grantUriPermissions="true">
+				<meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/provider_paths" />
 			</provider>
 		</config-file>
-		<source-file src="src/android/LogicLinkPlugin.java" target-dir="src/org/example/logiclinkplugin"/>
+		<source-file src="src/android/LogicLinkPlugin.java" target-dir="src/com/mba3/cordofileopen"/>
 		<source-file src="src/android/res/xml/provider_paths.xml" target="res/xml/provider_paths.xml"/>
 	</platform>
 	<dependency id="cordova-plugin-file"/>

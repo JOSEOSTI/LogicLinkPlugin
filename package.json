@@ -1,9 +1,9 @@
 {
-  "name": "mi-logiclinkplugin",
+  "name": "com.mba3.cordofileopen",
   "version": "0.0.1",
   "description": "Un plugin de Cordova",
   "cordova": {
-    "id": "org.example.logiclinkplugin",
+    "id": "com.mba3.cordofileopen",
     "platforms": [
       "android"
     ]
