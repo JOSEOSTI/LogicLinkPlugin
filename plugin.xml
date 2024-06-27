@@ -9,7 +9,7 @@
 	<platform name="android">
 		<config-file parent="/*" target="res/xml/config.xml">
 			<feature name="LogicLinkPlugin">
-				<param name="android-package" value="org.example.logiclinkplugin.LogicLinkPlugin" />
+				<param name="android-package" value="org.example.logiclinkplugin" />
 			</feature>
 		</config-file>
 
@@ -24,7 +24,7 @@
                     android:resource="@xml/provider_paths" />
 			</provider>
 		</config-file>
-		<source-file src="src/android/LogicLinkPlugin.java" target-dir="src/org/example/logiclinkplugin" />
+		<source-file src="src/android/LogicLinkPlugin.java" target-dir="src/org/example/logiclinkplugin"/>
 		<source-file src="src/android/res/xml/provider_paths.xml" target="res/xml/provider_paths.xml"/>
 		        <!-- Permissions -->
         <config-file parent="/manifest" target="AndroidManifest.xml">
