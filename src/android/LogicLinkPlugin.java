@@ -66,7 +66,7 @@ public class LogicLinkPlugin extends CordovaPlugin {
 
                 Context context = cordova.getActivity().getApplicationContext();
                 File file = new File(uri.getPath());
-                Uri fileUri = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", file);
+                Uri fileUri = FileProvider.getUriForFile(context, context.getPackageName() + ".provider", file);
 
                 fileIntent.setDataAndType(fileUri, mime);
                 fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
