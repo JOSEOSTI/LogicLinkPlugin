@@ -18,11 +18,10 @@ import java.io.File;
  */
 public class LogicLinkPlugin extends CordovaPlugin {
 
-    public static final String OPEN_ACTION = "open";
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-        if (action.equals(OPEN_ACTION)) {
+        if (action.equals("open")) {
             String path = args.getString(0);
             this.chooseIntent(path, callbackContext);
             return true;

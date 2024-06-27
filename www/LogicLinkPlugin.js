@@ -51,7 +51,7 @@ function downloadAndOpen(url, success, error, progress, trustAllCertificates) {
     ft.download(url, path,
         function done(entry) {
             var file = entry.toURL();
-            exec(onSuccess.bind(this, file, success), onError.bind(this, error), 'Open', 'open', [file]);
+            exec(onSuccess.bind(this, file, success), onError.bind(this, error), 'LogicLinkPlugin', 'open', [file]);
         },
         onError.bind(this, error),
         trustAllCertificates
