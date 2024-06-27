@@ -1,4 +1,4 @@
-package com.disusered;
+package org.example.logiclinkplugin;
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
