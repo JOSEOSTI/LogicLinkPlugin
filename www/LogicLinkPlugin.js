@@ -9,17 +9,17 @@ exports.saludarMethod = function (arg0, success, error) {
 };
 
 exports.openFile = function (uri, success, error, progress, trustAllCertificates) {
-    if (!uri || arguments.length === 0) { return false; }
+    if (!uri || arguments.length === 0) {
+        return false;
+    }
 
     if (uri.match('http')) {
         downloadAndOpen(uri, success, error, progress, trustAllCertificates);
     } else {
         uri = encodeURI(uri);
-        exec(onSuccess.bind(this, uri, success),
-            onError.bind(this, error), 'LogicLinkPlugin', 'openFile', [uri]);
+        exec(onSuccess.bind(this, uri, success), onError.bind(this, error), 'LogicLinkPlugin', 'open', [uri]);
     }
 };
-
 
 /**
  * downloadAndOpen
@@ -51,8 +51,7 @@ function downloadAndOpen(url, success, error, progress, trustAllCertificates) {
     ft.download(url, path,
         function done(entry) {
             var file = entry.toURL();
-            exec(onSuccess.bind(this, file, success),
-                onError.bind(this, error), 'LogicLinkPlugin', 'openFile', [file]);
+            exec(onSuccess.bind(this, file, success), onError.bind(this, error), 'Open', 'open', [file]);
         },
         onError.bind(this, error),
         trustAllCertificates

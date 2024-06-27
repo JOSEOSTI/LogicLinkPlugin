@@ -1,101 +1,90 @@
-package org.example.logiclinkplugin;
+package com.disusered;
 
 import org.apache.cordova.CordovaPlugin;
-
-import android.content.ActivityNotFoundException;
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
-import androidx.core.content.FileProvider;
-import android.webkit.MimeTypeMap;
-
-import java.io.File;
-import java.io.IOException;
-
+import org.apache.cordova.CallbackContext;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.apache.cordova.CallbackContext;
+import android.content.Context;
+import android.net.Uri;
+import android.content.Intent;
+import androidx.core.content.FileProvider;
+import android.webkit.MimeTypeMap;
+import android.content.ActivityNotFoundException;
+import android.os.Build;
+import java.io.File;
 
-public class LogicLinkPlugin extends CordovaPlugin {
+/**
+ * This class starts an activity for an intent to view files
+ */
+public class Open extends CordovaPlugin {
+
+    public static final String OPEN_ACTION = "open";
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-        if (action.equals("coolMethod")) {
-            String message = args.getString(0);
-            this.coolMethod(message, callbackContext);
-            return true;
-        } else if (action.equals("saludarMethod")) {
-            String message = args.getString(0);
-            this.saludarMethod(message, callbackContext);
-            return true;
-        } else if (action.equals("openFile")) {
-            String filePath = args.getString(0);
-            openFile(filePath, callbackContext);
+        if (action.equals(OPEN_ACTION)) {
+            String path = args.getString(0);
+            this.chooseIntent(path, callbackContext);
             return true;
         }
         return false;
     }
 
-    private void coolMethod(String message, CallbackContext callbackContext) {
-        if (message != null && message.length() > 0) {
-            callbackContext.success(message);
-        } else {
-            callbackContext.error("Expected one non-empty string argument.");
+    /**
+     * Returns the MIME type of the file.
+     *
+     * @param path
+     * @return
+     */
+    private static String getMimeType(String path) {
+        String mimeType = null;
+
+        String extension = MimeTypeMap.getFileExtensionFromUrl(path);
+        if (extension != null) {
+            MimeTypeMap mime = MimeTypeMap.getSingleton();
+            mimeType = mime.getMimeTypeFromExtension(extension.toLowerCase());
         }
-    }
-    
-    private void saludarMethod(String message, CallbackContext callbackContext) {
-        if (message != null && message.length() > 0) {
-            callbackContext.success("Hola " + message);
-        } else {
-            callbackContext.error("Expected one non-empty string argument.");
-        }
+
+        System.out.println("Mime type: " + mimeType);
+
+        return mimeType;
     }
 
-    private void openFile(String path, CallbackContext callbackContext) {
+    /**
+     * Creates an intent for the data of mime type
+     *
+     * @param path
+     * @param callbackContext
+     */
+    private void chooseIntent(String path, CallbackContext callbackContext) {
         if (path != null && path.length() > 0) {
             try {
-                Context context = cordova.getActivity().getApplicationContext();
-                File file = new File(path);
-                Uri uri;
-                String mime = getMimeType(file.getName());
+                Uri uri = Uri.parse(path);
+                String mime = getMimeType(path);
+                Intent fileIntent = new Intent(Intent.ACTION_VIEW);
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    // Utilizar FileProvider para generar la URI del archivo
-                    uri = FileProvider.getUriForFile(context, context.getPackageName() + ".provider", file);
+                // Set version to Android 12 (S) for example
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    Context context = cordova.getActivity().getApplicationContext();
+                    File file = new File(uri.getPath());
+                    Uri fileURI = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", file);
+                    fileIntent.setDataAndTypeAndNormalize(fileURI, mime);
+                    fileIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                } else if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) { // API Level 16 -> Android 4.1
+                    fileIntent.setDataAndTypeAndNormalize(uri, mime);
                 } else {
-                    // Si es una versión anterior a Android Nougat, utilizar Uri.fromFile()
-                    uri = Uri.fromFile(file);
+                    fileIntent.setDataAndType(uri, mime);
                 }
 
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setDataAndType(uri, mime);
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                cordova.getActivity().startActivity(fileIntent);
 
-                cordova.getActivity().startActivity(intent);
                 callbackContext.success();
             } catch (ActivityNotFoundException e) {
                 e.printStackTrace();
-                callbackContext.error("No application available to open this file.");
-            } catch (Exception e) {
-                e.printStackTrace();
-                callbackContext.error("Error opening file: " + e.getMessage());
+                callbackContext.error(1);
             }
         } else {
-            callbackContext.error("File path is empty or invalid.");
+            callbackContext.error(2);
         }
-    }
-
-    private String getMimeType(String url) {
-        String mimeType;
-        String extension = MimeTypeMap.getFileExtensionFromUrl(url);
-        if (extension != null) {
-            mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension.toLowerCase());
-        } else {
-            mimeType = "application/octet-stream";
-        }
-        return mimeType;
     }
 }
