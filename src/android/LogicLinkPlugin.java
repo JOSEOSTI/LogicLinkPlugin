@@ -1,5 +1,7 @@
 package com.mba3.cordofileopen;
 
+
+import androidx.core.content.FileProvider;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
 
@@ -9,9 +11,9 @@ import org.json.JSONException;
 import android.content.Context;
 import android.net.Uri;
 import android.content.Intent;
-import androidx.core.content.FileProvider;
 import android.webkit.MimeTypeMap;
 import android.content.ActivityNotFoundException;
+import android.os.Build;
 
 import java.io.File;
 
@@ -21,9 +23,11 @@ import java.io.File;
 public class LogicLinkPlugin extends CordovaPlugin {
 
 
+   public static final String OPEN_ACTION = "open";
+
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-        if (action.equals("open")) {
+        if (action.equals(OPEN_ACTION)) {
             String path = args.getString(0);
             this.chooseIntent(path, callbackContext);
             return true;
@@ -64,12 +68,18 @@ public class LogicLinkPlugin extends CordovaPlugin {
                 String mime = getMimeType(path);
                 Intent fileIntent = new Intent(Intent.ACTION_VIEW);
 
-                Context context = cordova.getActivity().getApplicationContext();
-                File file = new File(uri.getPath());
-                Uri fileUri = FileProvider.getUriForFile(context, context.getPackageName() + ".provider", file);
+                // Check SDK version for handling URI
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    Context context = cordova.getActivity().getApplicationContext();
+                    File file = new File(uri.getPath());
+                    Uri fileUri = FileProvider.getUriForFile(context, context.getPackageName() + ".provider", file);
+                    fileIntent.setDataAndTypeAndNormalize(fileUri, mime);
+                    fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                } else {
+                    fileIntent.setDataAndType(uri, mime);
+                }
 
-                fileIntent.setDataAndType(fileUri, mime);
-                fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                fileIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                 cordova.getActivity().startActivity(fileIntent);
 
@@ -77,9 +87,12 @@ public class LogicLinkPlugin extends CordovaPlugin {
             } catch (ActivityNotFoundException e) {
                 e.printStackTrace();
                 callbackContext.error(1);
+            } catch (Exception e) {
+                e.printStackTrace();
+                callbackContext.error(2);
             }
         } else {
-            callbackContext.error(2);
+            callbackContext.error(3);
         }
     }
 }
