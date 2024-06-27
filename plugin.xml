@@ -10,13 +10,13 @@
 				<param name="android-package" value="com.mba3.cordofileopen" />
 			</feature>
 		</config-file>
-		<config-file parent="/*" target="AndroidManifest.xml">
+		<config-file parent="/manifest/application" target="AndroidManifest.xml">
 			<provider  android:name="androidx.core.content.FileProvider" android:authorities="${applicationId}.provider" android:exported="false" android:grantUriPermissions="true">
 				<meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/provider_paths" />
 			</provider>
 		</config-file>
 		<source-file src="src/android/LogicLinkPlugin.java" target-dir="src/com/mba3/cordofileopen"/>
-		<source-file src="src/android/provider_paths.xml" target-dir="res/xml/provider_paths.xml"/>
+		<source-file src="src/android/provider_paths.xml" target-dir="res/xml"/>
 	</platform>
 	<dependency id="cordova-plugin-file"/>
 	<dependency id="cordova-plugin-file-transfer"/>
