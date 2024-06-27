@@ -16,10 +16,11 @@ import org.json.JSONException;
 import java.io.File;
 public class LogicLinkPlugin extends CordovaPlugin {
 
+    public static final String OPEN_ACTION = "open";
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-        if (action.equals("open")) {
+        if (action.equals(OPEN_ACTION)) {
             String path = args.getString(0);
             this.openFile(path, callbackContext);
             return true;
@@ -27,7 +28,6 @@ public class LogicLinkPlugin extends CordovaPlugin {
         return false;
     }
 
-  
     private void openFile(String path, CallbackContext callbackContext) {
         if (path != null && path.length() > 0) {
             try {
