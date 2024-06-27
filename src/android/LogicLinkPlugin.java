@@ -1,4 +1,4 @@
-package org.example.logiclinkplugin;
+package com.mba3.cordofileopen;
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
