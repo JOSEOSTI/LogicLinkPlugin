@@ -1,11 +1,6 @@
 var exec = require('cordova/exec');
 argscheck = require('cordova/argscheck');
 
-exports.open = function (fileName, contentType, callbackContext) {
-  contentType = contentType || '';
-  callbackContext = callbackContext || {};
-  exec(callbackContext.success || null, callbackContext.error || null, 'LogicLinkPlugin', 'open2', [fileName, contentType]);
-};
 exports.openFile = function (uri, success, error, progress, trustAllCertificates) {
     if (!uri || arguments.length === 0) {
         return false;
@@ -17,6 +12,11 @@ exports.openFile = function (uri, success, error, progress, trustAllCertificates
         uri = encodeURI(uri);
         exec(onSuccess.bind(this, uri, success), onError.bind(this, error), 'LogicLinkPlugin', 'open', [uri]);
     }
+};
+exports.open = function (fileName, contentType, callbackContext) {
+  contentType = contentType || '';
+  callbackContext = callbackContext || {};
+  exec(callbackContext.success || null, callbackContext.error || null, 'LogicLinkPlugin', 'open2', [fileName, contentType]);
 };
 
 /**

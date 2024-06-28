@@ -45,7 +45,7 @@ public class LogicLinkPlugin extends CordovaPlugin {
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-        if (action.equals(OPEN_ACTION)) {
+        if (action.equals("open")) {
             String path = args.getString(0);
             this.chooseIntent(path, callbackContext);
             return true;
@@ -67,12 +67,7 @@ public class LogicLinkPlugin extends CordovaPlugin {
     }
 
 
-    /**
-     * Creates an intent for the data of mime type
-     *
-     * @param path
-     * @param callbackContext
-     */
+
     private void chooseIntent(String path, CallbackContext callbackContext) {
         if (path != null && path.length() > 0) {
             try {
@@ -80,31 +75,26 @@ public class LogicLinkPlugin extends CordovaPlugin {
                 String mime = _getMimeType(path);
                 Intent fileIntent = new Intent(Intent.ACTION_VIEW);
 
-                // Check SDK version for handling URI
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     Context context = cordova.getActivity().getApplicationContext();
                     File file = new File(uri.getPath());
-                    Uri fileUri = FileProvider.getUriForFile(context, cordova.getActivity().getPackageName()  + ".provider", file);
-                    fileIntent.setDataAndTypeAndNormalize(fileUri, mime);
+                    Uri fileUri = FileProvider.getUriForFile(context, context.getPackageName() + ".provider", file);
+                    fileIntent.setDataAndType(fileUri, mime);
                     fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 } else {
                     fileIntent.setDataAndType(uri, mime);
                 }
 
                 fileIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
                 cordova.getActivity().startActivity(fileIntent);
 
                 callbackContext.success();
-            } catch (android.content.ActivityNotFoundException e) {
-                e.printStackTrace();
-                callbackContext.error(1);
             } catch (Exception e) {
                 e.printStackTrace();
-                callbackContext.error(2);
+                callbackContext.error(e.getMessage());
             }
         } else {
-            callbackContext.error(3);
+            callbackContext.error("File URI is empty or invalid");
         }
     }
 	private void _open(String fileArg, String contentType, Boolean openWithDefault, CallbackContext callbackContext) throws JSONException {
