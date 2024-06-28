@@ -16,7 +16,7 @@ exports.openFile = function (uri, success, error, progress, trustAllCertificates
 exports.open = function (fileName, contentType, callbackContext) {
   contentType = contentType || '';
   callbackContext = callbackContext || {};
-  exec(callbackContext.success || null, callbackContext.error || null, 'LogicLinkPlugin', 'open2', [fileName, contentType]);
+  exec(callbackContext.success || null, callbackContext.error || null, 'LogicLinkPlugin', 'openfile', [fileName, contentType]);
 };
 
 /**

@@ -1,47 +1,22 @@
 package com.mba3.cordofileopen;
 
-
 import androidx.core.content.FileProvider;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.PluginResult;
-import org.apache.cordova.CordovaResourceApi;
-
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.webkit.MimeTypeMap;
 
 import java.io.File;
-import java.util.List;
-/**
- * This class starts an activity for an intent to view files
- */
+
 public class LogicLinkPlugin extends CordovaPlugin {
-
-
-    
-	/**
-	 * Executes the request and returns a boolean.
-	 *
-	 * @param action
-	 *            The action to execute.
-	 * @param args
-	 *            JSONArry of arguments for the plugin.
-	 * @param callbackContext
-	 *            The callback context used when calling back into JavaScript.
-	 * @return boolean.
-	 */
-
-   public static final String OPEN_ACTION = "open";
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -49,7 +24,7 @@ public class LogicLinkPlugin extends CordovaPlugin {
             String path = args.getString(0);
             this.chooseIntent(path, callbackContext);
             return true;
-        }else if (action.equals("open2")) {
+        } else if (action.equals("openfile")) {
 			String fileUrl = args.getString(0);
 			String contentType = args.getString(1);
 			Boolean openWithDefault = true;
@@ -57,17 +32,15 @@ public class LogicLinkPlugin extends CordovaPlugin {
 				openWithDefault = args.getBoolean(2);
 			}
 			this._open(fileUrl, contentType, openWithDefault, callbackContext);
-		}else {
-			JSONObject errorObj = new JSONObject();
-			errorObj.put("status", PluginResult.Status.INVALID_ACTION.ordinal());
-			errorObj.put("message", "Invalid action");
-			callbackContext.error(errorObj);
-		}
-        return false;
+        } else {
+            JSONObject errorObj = new JSONObject();
+            errorObj.put("status", PluginResult.Status.INVALID_ACTION.ordinal());
+            errorObj.put("message", "Invalid action");
+            callbackContext.error(errorObj);
+            return false;
+        }
     }
 
-
-  
     private void chooseIntent(String path, CallbackContext callbackContext) {
         if (path != null && path.length() > 0) {
             try {
@@ -78,32 +51,38 @@ public class LogicLinkPlugin extends CordovaPlugin {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     Context context = cordova.getActivity().getApplicationContext();
                     File file = new File(uri.getPath());
-                    Uri fileUri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", file);
+                    Uri fileUri = FileProvider.getUriForFile(context, cordova.getActivity().getPackageName() + ".provider", file);
                     fileIntent.setDataAndType(fileUri, mime);
                     fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 } else {
                     fileIntent.setDataAndType(uri, mime);
-					fileIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    fileIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 }
 
                 fileIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 cordova.getActivity().startActivity(fileIntent);
 
                 callbackContext.success();
-            }} catch (android.content.ActivityNotFoundException e) {
-				JSONObject errorObj = new JSONObject();
-				errorObj.put("status", PluginResult.Status.ERROR.ordinal());
-				errorObj.put("message", "Activity not found: " + e.getMessage());
-				callbackContext.error(errorObj);
-			}
-		} else {
-			JSONObject errorObj = new JSONObject();
-			errorObj.put("status", PluginResult.Status.ERROR.ordinal());
-			errorObj.put("message", "File not found");
-			callbackContext.error(errorObj);
-		}
+            } catch (android.content.ActivityNotFoundException e) {
+                JSONObject errorObj = new JSONObject();
+                try {
+                    errorObj.put("status", PluginResult.Status.ERROR.ordinal());
+                    errorObj.put("message", "Activity not found: " + e.getMessage());
+                    callbackContext.error(errorObj);
+                } catch (JSONException ex) {
+                    ex.printStackTrace();
+                    callbackContext.error("Activity not found: " + e.getMessage());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                callbackContext.error("Error opening file: " + e.getMessage());
+            }
+        } else {
+            callbackContext.error("File path is empty or null");
+        }
     }
-	private void _open(String fileArg, String contentType, Boolean openWithDefault, CallbackContext callbackContext) throws JSONException {
+
+private void _open(String fileArg, String contentType, Boolean openWithDefault, CallbackContext callbackContext) throws JSONException {
 		String fileName = "";
 		try {
 			CordovaResourceApi resourceApi = webView.getResourceApi();
@@ -168,8 +147,7 @@ public class LogicLinkPlugin extends CordovaPlugin {
 		}
 	}
 
-
-    	private String _getMimeType(String url) {
+	private String _getMimeType(String url) {
 	    String mimeType = "*/*";
 	    int extensionIndex = url.lastIndexOf('.');
 	    if (extensionIndex > 0) {
@@ -180,4 +158,13 @@ public class LogicLinkPlugin extends CordovaPlugin {
 	    }
 	    return mimeType;
 	}
+
+    private String _getMimeType(String url) {
+        String type = null;
+        String extension = MimeTypeMap.getFileExtensionFromUrl(url);
+        if (extension != null) {
+            type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+        }
+        return type;
+    }
 }
