@@ -158,13 +158,4 @@ private void _open(String fileArg, String contentType, Boolean openWithDefault, 
 	    }
 	    return mimeType;
 	}
-
-    private String _getMimeType(String url) {
-        String type = null;
-        String extension = MimeTypeMap.getFileExtensionFromUrl(url);
-        if (extension != null) {
-            type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
-        }
-        return type;
-    }
 }
