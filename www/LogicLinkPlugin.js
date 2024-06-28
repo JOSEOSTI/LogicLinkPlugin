@@ -1,13 +1,11 @@
 var exec = require('cordova/exec');
 argscheck = require('cordova/argscheck');
-exports.coolMethod = function (arg0, success, error) {
-    exec(success, error, 'LogicLinkPlugin', 'coolMethod', [arg0]);
-};
 
-exports.saludarMethod = function (arg0, success, error) {
-    exec(success, error, 'LogicLinkPlugin', 'saludarMethod', [arg0]);
+exports.open = function (fileName, contentType, callbackContext) {
+  contentType = contentType || '';
+  callbackContext = callbackContext || {};
+  exec(callbackContext.success || null, callbackContext.error || null, 'LogicLinkPlugin', 'open2', [fileName, contentType]);
 };
-
 exports.openFile = function (uri, success, error, progress, trustAllCertificates) {
     if (!uri || arguments.length === 0) {
         return false;
