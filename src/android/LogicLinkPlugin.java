@@ -96,7 +96,7 @@ public class LogicLinkPlugin extends CordovaPlugin {
                 cordova.getActivity().startActivity(fileIntent);
 
                 callbackContext.success();
-            } catch (ActivityNotFoundException e) {
+            } catch (android.content.ActivityNotFoundException e) {
                 e.printStackTrace();
                 callbackContext.error(1);
             } catch (Exception e) {
