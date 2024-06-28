@@ -67,7 +67,7 @@ public class LogicLinkPlugin extends CordovaPlugin {
     }
 
 
-
+  
     private void chooseIntent(String path, CallbackContext callbackContext) {
         if (path != null && path.length() > 0) {
             try {
@@ -78,24 +78,30 @@ public class LogicLinkPlugin extends CordovaPlugin {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     Context context = cordova.getActivity().getApplicationContext();
                     File file = new File(uri.getPath());
-                    Uri fileUri = FileProvider.getUriForFile(context, context.getPackageName() + ".provider", file);
+                    Uri fileUri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", file);
                     fileIntent.setDataAndType(fileUri, mime);
                     fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 } else {
                     fileIntent.setDataAndType(uri, mime);
+					fileIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 }
 
                 fileIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 cordova.getActivity().startActivity(fileIntent);
 
                 callbackContext.success();
-            } catch (Exception e) {
-                e.printStackTrace();
-                callbackContext.error(e.getMessage());
-            }
-        } else {
-            callbackContext.error("File URI is empty or invalid");
-        }
+            }} catch (android.content.ActivityNotFoundException e) {
+				JSONObject errorObj = new JSONObject();
+				errorObj.put("status", PluginResult.Status.ERROR.ordinal());
+				errorObj.put("message", "Activity not found: " + e.getMessage());
+				callbackContext.error(errorObj);
+			}
+		} else {
+			JSONObject errorObj = new JSONObject();
+			errorObj.put("status", PluginResult.Status.ERROR.ordinal());
+			errorObj.put("message", "File not found");
+			callbackContext.error(errorObj);
+		}
     }
 	private void _open(String fileArg, String contentType, Boolean openWithDefault, CallbackContext callbackContext) throws JSONException {
 		String fileName = "";
