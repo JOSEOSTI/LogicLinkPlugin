@@ -84,7 +84,7 @@ public class LogicLinkPlugin extends CordovaPlugin {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     Context context = cordova.getActivity().getApplicationContext();
                     File file = new File(uri.getPath());
-                    Uri fileUri = FileProvider.getUriForFile(context, context.getPackageName() + ".provider", file);
+                    Uri fileUri = FileProvider.getUriForFile(context, cordova.getActivity().getPackageName()  + ".provider", file);
                     fileIntent.setDataAndTypeAndNormalize(fileUri, mime);
                     fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 } else {
@@ -132,7 +132,7 @@ public class LogicLinkPlugin extends CordovaPlugin {
 						path = Uri.fromFile(file);
 					} else {
 						Context context = cordova.getActivity().getApplicationContext();
-						path = FileProvider.getUriForFile(context, cordova.getActivity().getPackageName() + ".fileOpener2.provider", file);
+						path = FileProvider.getUriForFile(context, cordova.getActivity().getPackageName() + ".provider", file);
 					}
 					intent.setDataAndType(path, contentType);
 					intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -140,7 +140,7 @@ public class LogicLinkPlugin extends CordovaPlugin {
 				} else {
 					intent = new Intent(Intent.ACTION_VIEW);
 					Context context = cordova.getActivity().getApplicationContext();
-					Uri path = FileProvider.getUriForFile(context, cordova.getActivity().getPackageName() + ".fileOpener2.provider", file);
+					Uri path = FileProvider.getUriForFile(context, cordova.getActivity().getPackageName() + ".provider", file);
 					intent.setDataAndType(path, contentType);
 					intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
